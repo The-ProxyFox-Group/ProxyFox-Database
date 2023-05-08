@@ -9,12 +9,12 @@ import kotlinx.serialization.json.JsonObject
  *
  * @param collectionName The name of the collection to access
  * @param type The type of request to perform
- * @param comparisons A list of comparisons
+ * @param comparison The comparison to search with
  * @param data The data to use in the request
  * */
 public data class DatabaseRequest(
     val collectionName: String,
-    val comparisons: Comparison,
+    val comparison: Comparison,
     val type: RequestType,
     val data: JsonObject? = null
 )

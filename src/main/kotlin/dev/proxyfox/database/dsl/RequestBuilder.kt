@@ -11,7 +11,7 @@ import kotlin.reflect.KClass
  * Example:
  * ```kt
  * buildRequest(SomeClass::class, RequestType.FETCH_OR_CREATE) {
- *     +("nya" eq "uwu")
+ *     comparison("nya" has ("owo" eq "uwu"))
  *
  *     data(SomeClass())
  * }
@@ -24,17 +24,26 @@ public class RequestBuilder(
 ) {
 
     private var data: JsonObject? = null
-    private val comparisons: ArrayList<Comparison> = arrayListOf()
+    private lateinit var comparison: Comparison
 
     public fun data(obj: JsonObject) {
         this.data = obj
+    }
+
+    public fun comparison(comparison: Comparison) {
+        this.comparison = comparison
     }
 
     public inline fun <reified T> data(t: T) {
         data(json.encodeToJsonElement(t).jsonObject)
     }
 
-    internal fun build(): DatabaseRequest = TODO()
+    internal fun build(): DatabaseRequest = DatabaseRequest(
+            collectionName,
+            comparison,
+            type,
+            data
+    )
 }
 
 public typealias RequestBuilderAction = RequestBuilder.() -> Unit
